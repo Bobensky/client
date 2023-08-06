@@ -29,9 +29,9 @@ const ProductList = observer(() => {
         });
     };
 
-    const PaginationComponent = ({ catalog }) => {
-        const pages = [];
-        const totalPages = 16;
+    const PaginationComponent = ({ catalog, handleClick }) => {
+      const pages = [];
+      const totalPages = 16;
       
         if (catalog.page > 1) {
           pages.push(
