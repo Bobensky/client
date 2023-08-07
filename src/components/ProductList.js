@@ -54,9 +54,22 @@ const ProductList = observer(() => {
 
     const renderPageNumbers = () => {
         const pageNumbers = [];
+        const maxPageButtons = 10; // Максимальное количество кнопок
+        const halfMaxButtons = Math.floor(maxPageButtons / 2);
+        const totalPages = catalog.pages;
+
+        let startPage = Math.max(1, catalog.page - halfMaxButtons);
+        let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+        // Add ellipsis if necessary
+        if (startPage > 1) {
+            pageNumbers.push(
+                <Pagination.Ellipsis key="ellipsis-start" onClick={() => handleClick(startPage - 1)} />
+            );
+        }
 
         // Logic to display page numbers
-        for (let page = 1; page <= catalog.pages; page++) {
+        for (let page = startPage; page <= endPage; page++) {
             pageNumbers.push(
                 <Pagination.Item
                     key={page}
@@ -67,16 +80,33 @@ const ProductList = observer(() => {
                 </Pagination.Item>
             );
         }
+
+        if (endPage < totalPages) {
+            pageNumbers.push(
+                <Pagination.Ellipsis key="ellipsis-end" onClick={() => handleClick(endPage + 1)} />
+            );
+        }
+
         return pageNumbers;
     };
 
     return (
         <>
             <Helmet>
-                {/* Мета-теги */}
+                <title>Интернет магазин наручных часов в Алматы - Aksessuary.KZ</title>
+                <meta name="description" content="Онлайн магазин наручных часов"/>
+                <meta name="keywords" content="магазин швейцарских часов, магазин наручных часов, купить швейцарские часы, купить наручные часы в Алматы, наручные часы в Алматы, 
+                    часы в Алматы, купить наручные часы, наручные часы, часы, часы Anne Klein в Алматы, часы Calvin Klein в Алматы, часы Orinet в Алматы, 
+                    часы Citizen в Алматы, часы Diesel в Алматы, часы Swatch в Алматы" />
             </Helmet>
             <Row className="mb-3">
-                {/* Отображение продуктов */}
+                {catalog.products.length ? (
+                    catalog.products.map((item) => (
+                        <ProductItem key={`${item.id}_${catalog.page}`} data={item} />
+                    ))
+                ) : (
+                    <p className="m-3">По вашему запросу ничего не найдено</p>
+                )}
             </Row>
             {catalog.pages > 1 && (
                 <Pagination>
