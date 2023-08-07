@@ -100,7 +100,7 @@ const ProductList = observer(() => {
             <p className="m-3">По вашему запросу ничего не найдено</p>
           )}
         </Row>
-        {catalog.pages > 1 && <Pagination>{pages}</Pagination>}
+        {catalog.products.length > catalog.itemsPerPage && catalog.pages > 1 && <Pagination>{pages}</Pagination>}
       </>
     );
   };
